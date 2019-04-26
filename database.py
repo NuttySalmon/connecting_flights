@@ -24,6 +24,16 @@ class Database():
         self.initGroupedShortest()
 
 
+    """Add flight to db"""
+    def addFlight(self, orig, dest, **kwargs):
+        new_flight = {"orig": orig,
+                    "dest": dest}
+
+        for key, val in kwargs.items():
+            new_flight[key] = val
+
+        return self.flights.insert_one(new_flight)
+
     """Drop db"""
     def dropDatabase(self):
         self.client.drop_database(self.name)
