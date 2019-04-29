@@ -10,7 +10,7 @@ class Database():
         self.client = MongoClient(ip, port)  # get client
         self.name = db_name
         self.db = self.client[db_name]
-        self.dropDatabase()  # remove all data from db
+        self.drop_database()  # remove all data from db
         
         #
         try:  #test if db is connected
@@ -21,11 +21,10 @@ class Database():
 
         self.flights = self.db.flights
         self.grouped_shortest = self.db.shortestListList
-        self.initGroupedShortest()
-
+        self.init_grouped_shortest()
 
     """Add flight to db"""
-    def addFlight(self, orig, dest, **kwargs):
+    def add_flight(self, orig, dest, **kwargs):
         new_flight = {"orig": orig,
                     "dest": dest}
 
@@ -35,12 +34,12 @@ class Database():
         return self.flights.insert_one(new_flight)
 
     """Drop db"""
-    def dropDatabase(self):
+    def drop_database(self):
         self.client.drop_database(self.name)
 
-    def initGroupedShortest(self):
+    def init_grouped_shortest(self):
         for x in Database.Criterion:
             self.grouped_shortest.insert_one({"Criterion": x.name, "shortestList": []})
 
-    def allFlightsFrom(self, orig):
+    def all_flights_from(self, orig):
         return self.flights.find({"orig": orig})
