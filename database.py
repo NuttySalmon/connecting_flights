@@ -21,10 +21,7 @@ class Database():
 
         self.flights = self.db.flights
         self.airports = self.db.airports
-        self.grouped_shortest = self.db.shortestpathList
-        self.init_grouped_shortest()
-
-
+        
     def add_airort(self, airport):
         result = self.airports.find({"icao": airport})
         if result.count() == 0:
@@ -48,12 +45,7 @@ class Database():
     def drop_database(self):
         self.client.drop_database(self.name)
 
-    def init_grouped_shortest(self):
-        for x in Database.Criterion:
-            self.grouped_shortest.insert_one({"criterion": x.name, "shortestList": []})
-
     def all_flights_from(self, orig):
         return self.flights.find({"orig": orig})
 
-    def all_collections(self):
-        return self.grouped_shortest.find({})
+   

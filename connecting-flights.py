@@ -16,13 +16,11 @@ class ConnectingFlight:
         self.calc_all()
 
     def calc_all(self):
-        all_list = db.all_collections()
-        for l in all_list:
-            self.dijkstra(l["criterion"])   
+        self.dijkstra("dummy")
 
     def dijkstra(self, criterion):
         print(criterion)
-        
+
 
 
 
