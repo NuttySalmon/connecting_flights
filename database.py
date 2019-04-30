@@ -12,7 +12,7 @@ class Database():
         self.db = self.client[db_name]
         self.drop_database()  # remove all data from db
         
-        #
+        
         try:  #test if db is connected
             self.client.server_info()
             print("Connected to {}:{} - {}".format(ip, port, db_name))
@@ -20,11 +20,19 @@ class Database():
             print("Failed to connect to database")
 
         self.flights = self.db.flights
+        self.airports = self.db.airports
         self.grouped_shortest = self.db.shortestpathList
         self.init_grouped_shortest()
 
+
     """Add flight to db"""
     def add_flight(self, orig, dest, **kwargs):
+
+        for ap in [orig, dest]:
+            result = self.airports.find({"icao": ap})
+            if result.count() == 0:
+                self.airports.insert_one({"icao": ap})
+
         new_flight = {"orig": orig,
                     "dest": dest}
 
