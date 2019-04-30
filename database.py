@@ -48,4 +48,7 @@ class Database():
     def all_flights_from(self, orig):
         return self.flights.find({"orig": orig})
 
+    def all_airports(self):
+        return self.airports.find({})
+
    

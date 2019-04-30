@@ -1,4 +1,5 @@
 from database import Database
+import heapq
 
 class ConnectingFlight:
     def __init__(self, database):
@@ -16,14 +17,22 @@ class ConnectingFlight:
         self.calc_all()
 
     def calc_all(self):
-        self.dijkstra("dummy")
+        for cri in Database.Criterion:
+            print(cri)
+            for airport in self.db.all_airports():
+                print(airport)
+                self.dijkstra(cri, airport)
 
-    def dijkstra(self, criterion):
-        print(criterion)
 
-
-
-
+    def dijkstra(self, criterion, airport):
+        shortest_path = []
+        weight_name = criterion.name
+        pq  = []
+        orig = airport["icao"]
+        connected = self.db.all_flights_from(orig)
+        for flight in connected:
+            heapq.heappush(pq, (flight[weight_name], [flight["orig"], flight["dest"]]))
+        print(pq)
 
 
 if __name__ == '__main__':
