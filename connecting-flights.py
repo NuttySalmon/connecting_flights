@@ -6,15 +6,23 @@ class ConnectingFlight:
         
     def add_one_flight(self, orig, dest, **kwargs):
         db.add_flight(orig, dest, kwargs)
-        #self.calc_all()
+        self.calc_all()
 
     def add_many_flight(self, arr):
 
         for new_flight in arr:
             db.add_flight(new_flight[0], new_flight[1], **new_flight[2])
 
-        #self.calc_all()
+        self.calc_all()
 
+    def calc_all(self):
+        all_list = db.all_collections()
+        for l in all_list:
+            self.dijkstra(l["criterion"])   
+
+    def dijkstra(self, criterion):
+        print(criterion)
+        
 
 
 
