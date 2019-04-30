@@ -20,7 +20,7 @@ class Database():
             print("Failed to connect to database")
 
         self.flights = self.db.flights
-        self.grouped_shortest = self.db.shortestListList
+        self.grouped_shortest = self.db.shortestpathList
         self.init_grouped_shortest()
 
     """Add flight to db"""
