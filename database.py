@@ -39,7 +39,10 @@ class Database():
 
     def init_grouped_shortest(self):
         for x in Database.Criterion:
-            self.grouped_shortest.insert_one({"Criterion": x.name, "shortestList": []})
+            self.grouped_shortest.insert_one({"criterion": x.name, "shortestList": []})
 
     def all_flights_from(self, orig):
         return self.flights.find({"orig": orig})
+
+    def all_collections(self):
+        return self.grouped_shortest.find({})
