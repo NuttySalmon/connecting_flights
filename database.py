@@ -25,13 +25,16 @@ class Database():
         self.init_grouped_shortest()
 
 
+    def add_airort(self, airport):
+        result = self.airports.find({"icao": airport})
+        if result.count() == 0:
+            self.airports.insert_one({"icao": airport})
+
     """Add flight to db"""
     def add_flight(self, orig, dest, **kwargs):
 
-        for ap in [orig, dest]:
-            result = self.airports.find({"icao": ap})
-            if result.count() == 0:
-                self.airports.insert_one({"icao": ap})
+        self.add_airort(orig)
+        self.add_airort(dest)
 
         new_flight = {"orig": orig,
                     "dest": dest}
