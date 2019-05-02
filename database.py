@@ -1,8 +1,9 @@
 """db setup"""
-from pymongo import MongoClient, errors
 from enum import Enum
+from pymongo import MongoClient, errors
 
-class Database(): 
+
+class Database():
 
     Criterion = Enum('Criterion', 'price time')
 
@@ -10,19 +11,20 @@ class Database():
         self.client = MongoClient(ip, port)  # get client
         self.name = db_name
         self.db = self.client[db_name]
-        self.drop_database()  # remove all data from db
-        
-        
-        try:  #test if db is connected
+
+        #check if database is connected
+        try:
             self.client.server_info()
             print("Connected to {}:{} - {}".format(ip, port, db_name))
-        except:
+        except errors.ServerSelectionTimeoutError:
             print("Failed to connect to database")
+            exit()
 
+        self.drop_database()  # remove all data from db
         self.flights = self.db.flights
         self.airports = self.db.airports
-        
-    def add_airort(self, airport):
+
+    def add_airport(self, airport):
         result = self.airports.find({"icao": airport})
         if result.count() == 0:
             self.airports.insert_one({"icao": airport})
@@ -30,11 +32,11 @@ class Database():
     """Add flight to db"""
     def add_flight(self, orig, dest, **kwargs):
 
-        self.add_airort(orig)
-        self.add_airort(dest)
+        self.add_airport(orig)
+        self.add_airport(dest)
 
         new_flight = {"orig": orig,
-                    "dest": dest}
+                      "dest": dest}
 
         for key, val in kwargs.items():
             new_flight[key] = val
@@ -51,4 +53,7 @@ class Database():
     def all_airports(self):
         return self.airports.find({})
 
-   
+    # TODO: Function get shortest path for dest orig pair
+
+    # TODO: Create a shortest path document/entry from array
+    # of dest orig string pair
