@@ -53,6 +53,10 @@ class Database():
     def all_airports(self):
         return self.airports.find({})
 
+    def get_shortest_path(self, orig, dest):
+        return 1
+
+
     # TODO: Function get shortest path for dest orig pair
 
     # TODO: Create a shortest path document/entry from array
