@@ -30,18 +30,18 @@ class ConnectingFlight:
         currWeight = 0
         pq = OrderedDict()
         orig = airport["id"]
-        pq = self.addConnected(pq, orig, currWeight, weight_name)
+        pq = self.add_connected(pq, orig, currWeight, weight_name)
         curr = None
         while(len(pq) != 0):
             curr = pq.popitem(last=False)
             shortest_path.append(curr)
             print("procressing {}".format(curr[0]))
-            pq = self.addConnected(pq=pq, orig=curr[0], currWeight=curr[1][0],
-                                   weight_name=weight_name)
+            pq = self.add_connected(pq=pq, orig=curr[0], currWeight=curr[1][0],
+                                    weight_name=weight_name)
         for p in shortest_path:
             print("{}->{}".format(p[1][1]["orig"], p[1][1]["dest"]))
 
-    def addConnected(self, pq, orig, currWeight, weight_name):
+    def add_connected(self, pq, orig, currWeight, weight_name):
         connected = self.db.all_flights_from(orig)
         for flight in connected:
             f_dest = flight["dest"]
