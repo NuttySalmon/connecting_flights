@@ -30,10 +30,16 @@ class ConnectingFlight:
         currWeight = 0
         pq = OrderedDict()
         orig = airport["id"]
-        self.addConnected(pq, orig, currWeight, weight_name)
-        pq = OrderedDict(sorted(pq.items(), key=lambda x: x[1][0]))
-        print(pq.keys())
-        print(pq.items())
+        pq = self.addConnected(pq, orig, currWeight, weight_name)
+        curr = None
+        while(len(pq) != 0):
+            curr = pq.popitem(last=False)
+            shortest_path.append(curr)
+            print("procressing {}".format(curr[0]))
+            pq = self.addConnected(pq=pq, orig=curr[0], currWeight=curr[1][0],
+                                   weight_name=weight_name)
+        for p in shortest_path:
+            print("{}->{}".format(p[1][1]["orig"], p[1][1]["dest"]))
 
     def addConnected(self, pq, orig, currWeight, weight_name):
         connected = self.db.all_flights_from(orig)
@@ -49,7 +55,7 @@ class ConnectingFlight:
             except KeyError:
                 pq[f_dest] = (f_w, flight)
 
-       
+        return OrderedDict(sorted(pq.items(), key=lambda x: x[1][0]))
 
 
     # result = db.all_flights_from("KLAX")

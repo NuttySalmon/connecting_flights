@@ -12,7 +12,7 @@ class Database():
         self.name = db_name
         self.db = self.client[db_name]
 
-        #check if database is connected
+        # check if database is connected
         try:
             self.client.server_info()
             print("Connected to {}:{} - {}".format(ip, port, db_name))
@@ -55,7 +55,6 @@ class Database():
 
     def get_shortest_path(self, orig, dest):
         return 1
-
 
     # TODO: Function get shortest path for dest orig pair
 
