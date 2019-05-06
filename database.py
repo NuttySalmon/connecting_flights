@@ -53,6 +53,16 @@ class Database():
     def all_airports(self):
         return self.airports.find({})
 
+    def all_airports_list(self):
+        group = self.db.airports.aggregate([
+            {"$group": {
+                "_id": None,
+                "ids": {"$push": "$id"}
+            }}
+        ])
+
+        return list(group)[0]["ids"]
+
     def get_shortest_path(self, orig, dest):
         return 1
 
