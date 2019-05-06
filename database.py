@@ -54,7 +54,7 @@ class Database():
         return self.airports.find({})
 
     def all_airports_list(self):
-        group = self.db.airports.aggregate([
+        group = self.airports.aggregate([
             {"$group": {
                 "_id": None,
                 "ids": {"$push": "$id"}

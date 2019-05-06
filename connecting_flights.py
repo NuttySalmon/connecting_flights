@@ -5,6 +5,7 @@ from collections import OrderedDict
 class ConnectingFlight:
     def __init__(self, database):
         self.db = database
+        self.floyd_warshal_shortest = {}
 
     def add_one_flight(self, orig, dest, **kwargs):
         self.db.add_flight(orig, dest, kwargs)
@@ -58,14 +59,8 @@ class ConnectingFlight:
         return OrderedDict(sorted(pq.items(), key=lambda x: x[1][0]))
 
     def floyd_warshal(self, criterion):
-        group = self.db.airports.aggregate([
-            {"$group": {
-                "_id": None,
-                "ids": {"$push": "$id"}
-            }}
-        ])
 
-        all_airports = list(group)[0]["ids"]
+        all_airports = self.db.all_airports_list()
 
         adj = self.make_adj(all_airports, criterion)
         for thru in all_airports:   # intermediate point
@@ -90,6 +85,11 @@ class ConnectingFlight:
                         # do nothin if one of the intermediate paths not found
                         continue
         print(adj)
+        self.floyd_warshal_shortest = adj
+
+    def print_floyd_warshal(self):
+        all_airports = self.db.all_airports_list()
+
         for orig in all_airports:
             for des in all_airports:
                 shortest = []
@@ -97,19 +97,18 @@ class ConnectingFlight:
                     start = orig
                     end = des
                     while start != end:
-                        mid = adj[(start, end)][0]
+                        mid = self.floyd_warshal_shortest[(start, end)][0]
                         shortest.append((mid, end))
                         end = mid
                 except KeyError:
                     pass
 
-                print("\nFrom {} to {}:". format(orig, des))
+                print("\nFrom {} to {}:".format(orig, des))
                 if len(shortest) > 0:
                     for start, end in shortest[::-1]:
                         print("{}->{}".format(start, end))
                 else:
                     print("Not connected")
-
 
 
     def make_adj(self, all_airports, criterion):
