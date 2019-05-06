@@ -57,7 +57,16 @@ class ConnectingFlight:
 
         return OrderedDict(sorted(pq.items(), key=lambda x: x[1][0]))
 
-
+    def floyd_warshal(self, criterion):
+        weight_name = criterion.name
+        adj = {}
+        for airport in self.db.all_airports():
+            orig = airport["id"]
+            connected = self.db.all_flights_from(orig)
+            for flight in connected:
+                dest = flight["dest"]
+                adj[(orig, dest)] = flight[weight_name]
+        print(adj)
     # result = db.all_flights_from("KLAX")
     # for flight in result:
     #     print(flight)
