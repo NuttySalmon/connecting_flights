@@ -21,7 +21,7 @@ class ConnectingFlight:
         for cri in Database.Criterion:
             print("Criteron: {}".format(cri.name))
             for airport in self.db.all_airports():
-                print("{}:".format(airport["icao"]))
+                print("{}:".format(airport["id"]))
                 self.dijkstra(cri, airport)
 
     def dijkstra(self, criterion, airport):
@@ -29,7 +29,7 @@ class ConnectingFlight:
         weight_name = criterion.name
         currWeight = 0
         pq = OrderedDict()
-        orig = airport["icao"]
+        orig = airport["id"]
         self.addConnected(pq, orig, currWeight, weight_name)
         pq = OrderedDict(sorted(pq.items(), key=lambda x: x[1][0]))
         print(pq.keys())
