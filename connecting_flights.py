@@ -15,7 +15,7 @@ class ConnectingFlight:
         for new_flight in arr:
             self.db.add_flight(new_flight[0], new_flight[1], **new_flight[2])
 
-        self.calc_all()
+        # self.calc_all()
 
     def calc_all(self):
         for cri in Database.Criterion:
@@ -58,18 +58,73 @@ class ConnectingFlight:
         return OrderedDict(sorted(pq.items(), key=lambda x: x[1][0]))
 
     def floyd_warshal(self, criterion):
-        adj = self.make_adj(criterion)
+        group = self.db.airports.aggregate([
+            {"$group": {
+                "_id": None,
+                "ids": {"$push": "$id"}
+            }}
+        ])
 
-    def make_adj(self, criterion):
+        all_airports = list(group)[0]["ids"]
+
+        adj = self.make_adj(all_airports, criterion)
+        for thru in all_airports:   # intermediate point
+            for orig in all_airports:
+                if orig == thru:
+                    continue  # continue if intermediate is same as origin
+                for dest in all_airports:
+                    if dest == thru or dest == orig:
+                        # continue if intermediate or destination is origin
+                        continue
+
+                    try:
+                        new_weight = adj[(orig, thru)][1] + adj[(thru, dest)][1]
+                        try:
+                            old_weight = adj[(orig, dest)][1]
+                            if new_weight < old_weight:
+                                adj[orig, dest] = (adj[(thru, dest)][0], new_weight)
+                        except KeyError:
+                            adj[orig, dest] = (adj[(thru, dest)][0], new_weight)
+
+                    except KeyError:
+                        # do nothin if one of the intermediate paths not found
+                        continue
+        print(adj)
+        for orig in all_airports:
+            for des in all_airports:
+                shortest = []
+                try:
+                    start = orig
+                    end = des
+                    while start != end:
+                        mid = adj[(start, end)][0]
+                        shortest.append((mid, end))
+                        end = mid
+                except KeyError:
+                    pass
+
+                print("\nFrom {} to {}:". format(orig, des))
+                if len(shortest) > 0:
+                    for start, end in shortest[::-1]:
+                        print("{}->{}".format(start, end))
+                else:
+                    print("Not connected")
+
+
+
+    def make_adj(self, all_airports, criterion):
         weight_name = criterion.name
+
         adj = {}
-        for airport in self.db.all_airports():
-            orig = airport["id"]
+        # adj key: origin destion pair
+        # adj value: origin of last path and weight
+
+        for orig in all_airports:
             connected = self.db.all_flights_from(orig)
             for flight in connected:
                 dest = flight["dest"]
-                adj[(orig, dest)] = flight[weight_name]
-        print(adj)
+                adj[(orig, dest)] = (orig, flight[weight_name])
+        # print(adj)
         return adj
 
 
