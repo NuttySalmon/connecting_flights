@@ -5,7 +5,7 @@ from collections import OrderedDict
 class ConnectingFlight:
     def __init__(self, database):
         self.db = database
-        self.floyd_warshal_shortest = {}
+        #self.floyd_warshal_shortest = {}
 
     def add_one_flight(self, orig, dest, **kwargs):
         self.db.add_flight(orig, dest, kwargs)
@@ -59,10 +59,10 @@ class ConnectingFlight:
         return OrderedDict(sorted(pq.items(), key=lambda x: x[1][0]))
 
     def floyd_warshal(self, criterion):
-
+        #cri = criterion.name
         all_airports = self.db.all_airports_list()
 
-        adj = self.make_adj(all_airports, criterion)
+        self.make_adj(all_airports, criterion)
         for thru in all_airports:   # intermediate point
             for orig in all_airports:
                 if orig == thru:
@@ -72,49 +72,67 @@ class ConnectingFlight:
                         # continue if intermediate or destination is origin
                         continue
 
-                    try:
-                        new_weight = adj[(orig, thru)][1] + adj[(thru, dest)][1]
-                        try:
-                            old_weight = adj[(orig, dest)][1]
-                            if new_weight < old_weight:
-                                adj[orig, dest] = (adj[(thru, dest)][0], new_weight)
-                        except KeyError:
-                            adj[orig, dest] = (adj[(thru, dest)][0], new_weight)
-
-                    except KeyError:
-                        # do nothin if one of the intermediate paths not found
+                    orig_to_thru = self.db.get_adj(criterion, orig, thru)
+                    thru_to_dest = self.db.get_adj(criterion, thru, dest)
+                    if orig_to_thru is None or thru_to_dest is None:
                         continue
-        print(adj)
-        self.floyd_warshal_shortest = adj
 
-    def print_floyd_warshal(self):
+                    new_weight = orig_to_thru["weight"] + thru_to_dest["weight"]
+                    last_path = thru_to_dest["thru"]
+                    orig_adj = self.db.get_adj(criterion, orig, dest)
+                    if orig_adj is None:
+                        self.db.add_to_adj(criterion, orig, dest, last_path, new_weight)
+                    else:
+                        old_weight = orig_adj["weight"]
+                        if new_weight < old_weight:
+                            self.db.update_adj(criterion, orig, dest, last_path, new_weight)
+
+        # print(adj)
+        # self.floyd_warshal_shortest = adj
+
+    def print_floyd_warshal(self, criterion):
         all_airports = self.db.all_airports_list()
 
         for orig in all_airports:
             for des in all_airports:
                 shortest = []
-                try:
-                    start = orig
-                    end = des
-                    while start != end:
-                        mid = self.floyd_warshal_shortest[(start, end)][0]
-                        shortest.append((mid, end))
-                        end = mid
-                except KeyError:
-                    pass
+
+                start = orig
+                end = des
+                while start != end:
+                    adj = self.db.get_adj(criterion, start, end)
+                    if adj is None:
+                        break
+                    mid = adj["thru"]
+                    shortest.append((mid, end))
+                    end = mid
 
                 print("\nFrom {} to {}:".format(orig, des))
                 if len(shortest) > 0:
+                    total = 0
                     for start, end in shortest[::-1]:
-                        print("{}->{}".format(start, end))
+                        weight = self.db.get_weight(criterion, start, end)
+                        total += weight
+                        weight = self.get_str_from_cri(criterion, weight)
+                        print("{}->{}: {}".format(start, end, weight))
+
+                    total = self.get_str_from_cri(criterion, total)
+                    print("Total {}: {}".format(criterion.name, total))
                 else:
                     print("Not connected")
+
+
+    def get_str_from_cri(self, criterion, target):
+        if criterion == Database.Criterion.price:
+            return "${}".format('%.2f' % target)
+        elif criterion == Database.Criterion.time:
+            return "{}h {}m".format(target // 60, target % 60)
+
 
 
     def make_adj(self, all_airports, criterion):
         weight_name = criterion.name
 
-        adj = {}
         # adj key: origin destion pair
         # adj value: origin of last path and weight
 
@@ -122,10 +140,9 @@ class ConnectingFlight:
             connected = self.db.all_flights_from(orig)
             for flight in connected:
                 dest = flight["dest"]
-                adj[(orig, dest)] = (orig, flight[weight_name])
+                self.db.add_to_adj(criterion, orig, dest, orig, flight[weight_name])
         # print(adj)
-        return adj
-
+        #return adj
 
     # result = db.all_flights_from("KLAX")
     # for flight in result:

@@ -23,6 +23,7 @@ class Database():
         self.drop_database()  # remove all data from db
         self.flights = self.db.flights
         self.airports = self.db.airports
+        self.adj = self.db.adj
 
     def add_airport(self, airport):
         result = self.airports.find({"id": airport})
@@ -39,7 +40,7 @@ class Database():
                       "dest": dest}
 
         for key, val in kwargs.items():
-            new_flight[key] = val
+            new_flight[key] = float(val)
 
         return self.flights.insert_one(new_flight)
 
@@ -66,7 +67,39 @@ class Database():
     def get_shortest_path(self, orig, dest):
         return 1
 
-    # TODO: Function get shortest path for dest orig pair
+    def add_to_adj(self, criterion, orig, dest, thru, weight):
+        new_adj = {
+            "criterion": criterion.name,
+            "orig": orig,
+            "dest": dest,
+            "thru": thru,
+            "weight": weight
+        }
+        self.adj.insert_one(new_adj)
 
-    # TODO: Create a shortest path document/entry from array
-    # of dest orig string pair
+    def get_adj(self, criterion, orig, dest):
+        target = {"criterion": criterion.name, "orig": orig, "dest": dest}
+        return self.adj.find_one(target)
+
+    def update_adj(self, criterion, orig, dest, thru, weight):
+        query = {
+            "criterion": criterion.name,
+            "orig": orig,
+            "dest": dest,
+        }
+
+        new_val = {"$set": {
+            "thru": thru,
+            "weight": weight
+            }
+        }
+
+        self.adj.update_one(query, new_val)
+
+    def get_weight(self, criterion, orig, dest):
+        query = {
+            "orig": orig,
+            "dest": dest
+        }
+        target = self.flights.find_one(query)
+        return target[criterion.name]  # return weight

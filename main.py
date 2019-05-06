@@ -16,7 +16,7 @@ if __name__ == '__main__':
                         ["d", "f", {"price": 11, "time": 3}]])
 
     cf.floyd_warshal(Database.Criterion.price)
-    cf.print_floyd_warshal()
+    cf.print_floyd_warshal(Database.Criterion.price)
     # result = db.all_flights_from("KLAX")
     # for flight in result:
     #     print(flight)
