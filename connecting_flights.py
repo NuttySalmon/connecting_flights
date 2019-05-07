@@ -18,8 +18,10 @@ class ConnectingFlight:
             self.db.add_flight(new_flight[0], new_flight[1], **new_flight[2])
 
         self.calc_all()
+        print("ok")
 
     def calc_all(self):
+        self.db.clear_adj()
         # calculate shortest path for each criterion
         for cri in Database.Criterion:
             print("Calculating for {}".format(cri.name))
@@ -69,7 +71,7 @@ class ConnectingFlight:
 
         all_airports = self.db.all_airports_list()
 
-        self.db.clear_adj()  # clear adjacency list
+         # clear adjacency list
         self.make_adj(all_airports, criterion)
 
         for thru in all_airports:   # intermediate vertex to consider
