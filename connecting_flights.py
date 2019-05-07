@@ -1,5 +1,4 @@
 from database import Database
-from collections import OrderedDict
 
 
 class ConnectingFlight:
@@ -26,11 +25,6 @@ class ConnectingFlight:
         for cri in Database.Criterion:
             print("Calculating for {}".format(cri.name))
             self.floyd_warshal(cri)
-            '''
-            for airport in self.db.all_airports():
-                # print("{}:".format(airport["id"]))
-                self.dijkstra(cri, airport)
-            '''
 
     def floyd_warshal(self, criterion):
         '''
@@ -39,7 +33,7 @@ class ConnectingFlight:
 
         all_airports = self.db.all_airports_list()
 
-         # clear adjacency list
+        # clear adjacency list
         self.make_adj(all_airports, criterion)
 
         for thru in all_airports:   # intermediate vertex to consider
@@ -73,8 +67,7 @@ class ConnectingFlight:
                             self.db.update_adj(criterion, orig, dest,
                                                last_path, new_weight)
 
-        # print(adj)
-        # self.floyd_warshal_shortest = adj
+        
 
     def print_floyd_warshal(self, criterion):
         '''
@@ -129,7 +122,6 @@ class ConnectingFlight:
         output["total_weight"] = total
         return output 
 
-
     def get_str_from_cri(self, criterion, target):
         '''
         Return formatted string with associated unit
@@ -139,7 +131,6 @@ class ConnectingFlight:
             return "${}".format('%.2f' % target)
         elif criterion == Database.Criterion.time:
             return "{}h {}m".format(target // 60, target % 60)
-
 
     def make_adj(self, all_airports, criterion):
         '''
@@ -153,9 +144,3 @@ class ConnectingFlight:
                 dest = flight["dest"]
                 self.db.add_to_adj(criterion, orig, dest, orig,
                                    flight[weight_name])
-        # print(adj)
-        #return adj
-
-    # result = db.all_flights_from("KLAX")
-    # for flight in result:
-    #     print(flight)

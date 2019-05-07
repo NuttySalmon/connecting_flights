@@ -103,6 +103,6 @@ class Database():
         }
         target = self.flights.find_one(query)
         return target[criterion.name]  # return weight
-   
+
     def clear_adj(self):
         self.adj.drop()
