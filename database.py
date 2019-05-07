@@ -64,8 +64,6 @@ class Database():
 
         return list(group)[0]["ids"]
 
-    def get_shortest_path(self, orig, dest):
-        return 1
 
     def add_to_adj(self, criterion, orig, dest, thru, weight):
         new_adj = {
