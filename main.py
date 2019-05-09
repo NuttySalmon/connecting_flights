@@ -30,28 +30,17 @@ def import_route_csv(cf, filename):
 
 if __name__ == '__main__':
     db = Database('localhost', 27017, "connecting_flight")
-    #db.drop_database()
+    db.drop_database()
     cf = ConnectingFlight(db)
-    # import_route_csv(cf, "1")
-    # data from: https://en.wikipedia.org/wiki/Shortest_path_problem#/media/File:Shortest_path_with_direct_weights.svg
-    '''
-    cf.add_one_flight("a", "b", price=4, time=1)
-    cf.add_many_flight([["a", "b", {"price": 4, "time": 1}],
-                        ["a", "c", {"price": 2, "time": 2}],
-                        ["b", "c", {"price": 5, "time": 3}],
-                        ["b", "d", {"price": 10, "time": 3}],
-                        ["c", "e", {"price": 3, "time": 3}],
-                        ["e", "d", {"price": 4, "time": 3}],
-                        ["d", "f", {"price": 11, "time": 3}]])
-    
-    # cf.print_floyd_warshal(Database.Criterion.price)
-    '''
+    import_route_csv(cf, "1")
+
+
 
     def menu():
         print("Welcome, choose an option (Enter 'q' to quit) : \n 1. Add Airport \n 2. Add  flight \n 3. Find shortest path")
-        price = db.Criterion.price
-        duration = db.Criterion.duration
-        distance = db.Criterion.distance
+        # price = db.Criterion.price
+        # duration = db.Criterion.duration
+        # distance = db.Criterion.distance
         option = input()
         loop = True
         while loop is True:
