@@ -1,5 +1,5 @@
 from database import Database
-
+import time
 
 class ConnectingFlight:
     def __init__(self, database):
@@ -20,7 +20,6 @@ class ConnectingFlight:
             self.db.add_flight(orig, dest, **new_flight[2])
 
         self.calc_all()
-        print("ok")
 
     def calc_all(self):
         self.db.clear_adj()
@@ -28,8 +27,11 @@ class ConnectingFlight:
         # calculate shortest path for each criterion
         for cri in Database.Criterion:
             print("Calculating for {}".format(cri.name))
+            t1 = time.time()
             self.floyd_warshal(cri)
-
+            t2 = time.time()
+            print(t2-t1)
+            
     def floyd_warshal(self, criterion):
         '''
         Generate shortest path relatinship in db using floyd warshal algorithm
