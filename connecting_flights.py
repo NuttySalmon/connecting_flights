@@ -95,7 +95,7 @@ class ConnectingFlight:
                     print("Total {}: {}".format(criterion.name, total))
 
                 else:
-                    print("Not connected")
+                    print("No data")
 
     def get_shortest_floyd_warshal(self, criterion, orig, dest):
         '''
@@ -131,6 +131,8 @@ class ConnectingFlight:
             return "${}".format('%.2f' % target)
         elif criterion == Database.Criterion.time:
             return "{}h {}m".format(target // 60, target % 60)
+        elif criterion == Database.Criterion.distance:
+            return "{} miles".format(target)
 
     def make_adj(self, all_airports, criterion):
         '''
@@ -142,5 +144,9 @@ class ConnectingFlight:
             connected = self.db.all_flights_from(orig)
             for flight in connected:
                 dest = flight["dest"]
-                self.db.add_to_adj(criterion, orig, dest, orig,
-                                   flight[weight_name])
+                try:
+                    weight = flight[weight_name]
+                    self.db.add_to_adj(criterion, orig, dest, orig, weight)
+                except KeyError:
+                    pass
+
