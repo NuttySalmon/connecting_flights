@@ -1,4 +1,5 @@
 import csv
+import random
 
 COST_FACTOR = 3.75
 #CUTDOWN_INDEX = 50000
@@ -16,7 +17,7 @@ def convert(in_name, out_name, top_airports, cutdown):
             no = row["OP_CARRIER_FL_NUM"]
             duration = int(float(row["CRS_ELAPSED_TIME"]))
             distance = int(float(row["DISTANCE"]))
-            price = round(distance/COST_FACTOR, 2)  # calculate sample price
+            price = round(price_cal(distance), 2)  # calculate sample price
             flightinfo = [airline, no, orig, dest, duration, distance, price]
 
 
@@ -35,6 +36,11 @@ def convert(in_name, out_name, top_airports, cutdown):
 
     print("Successfully converted data at {}. Size: {}".format(out_name, count))
 
+
+def price_cal(distance):
+    return distance/COST_FACTOR * random.randint(5, 30)/10
+
+
 if __name__ == '__main__':
     top_airports = []
     #top_airlines = []
@@ -46,3 +52,4 @@ if __name__ == '__main__':
     in_file = input("Input file name: ")
     cut = input("Cut down factor: ")
     convert(in_file, cut, top_airports, int(cut))
+
