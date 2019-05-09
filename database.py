@@ -5,7 +5,7 @@ from pymongo import MongoClient, errors
 
 class Database():
 
-    Criterion = Enum('Criterion', 'price time')
+    Criterion = Enum('Criterion', 'price time distance')
 
     def __init__(self, ip, port, db_name):
         self.client = MongoClient(ip, port)  # get client
