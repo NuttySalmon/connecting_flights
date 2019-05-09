@@ -30,9 +30,9 @@ def import_route_csv(cf, filename):
 
 if __name__ == '__main__':
     db = Database('localhost', 27017, "connecting_flight")
-    db.drop_database()
+    #db.drop_database()
     cf = ConnectingFlight(db)
-    import_route_csv(cf, "1")
+    # import_route_csv(cf, "1")
     # data from: https://en.wikipedia.org/wiki/Shortest_path_problem#/media/File:Shortest_path_with_direct_weights.svg
     '''
     cf.add_one_flight("a", "b", price=4, time=1)
@@ -83,10 +83,11 @@ if __name__ == '__main__':
                 print("Choose criterion:")
                 for c in Database.Criterion:
                     print("{}. {}".format(c.value, c.name))
-                crit = input()
-
+                crit_no = input()
+                crit = Database.Criterion(int(crit_no))
                 try:
-                    cf.get_shortest_floyd_warshal(crit, origin_shortest, dest_shortest)
+
+                    short = cf.get_shortest_floyd_warshal(crit, origin_shortest, dest_shortest)
                 except ValueError:
                     print("Invalid choice")
                     break
