@@ -90,9 +90,11 @@ class ConnectingFlight:
                 result = self.get_shortest_floyd_warshal(criterion, orig, dest)
 
                 if len(result["path"]) != 0:
-                    for o, d, w in result["path"]:
+                    for o, d, w, f in result["path"]:
+                        if f is None:
+                            f = ""
                         weight = self.get_str_from_cri(criterion, w)
-                        print("{}->{}: {}".format(o, d, weight))
+                        print("{} {}->{}: {}".format(f, o, d, weight))
 
                     total = self.get_str_from_cri(criterion,
                                                   result["total_weight"])
@@ -151,7 +153,10 @@ class ConnectingFlight:
             connected = self.db.all_flights_from(orig)
             for flight in connected:
                 dest = flight["dest"]
-                last_flight = (flight["airline"], flight["no"])
+                try:
+                    last_flight = (flight["airline"], flight["no"])
+                except KeyError:
+                    last_flight = None
                 try:
                     weight = float(flight[weight_name])
                     find_existing = self.db.get_adj(criterion, orig, dest)
