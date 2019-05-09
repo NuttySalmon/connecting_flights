@@ -5,7 +5,7 @@ from pymongo import MongoClient, errors
 
 class Database():
 
-    Criterion = Enum('Criterion', 'price time distance')
+    Criterion = Enum('Criterion', 'price duration distance')
 
     def __init__(self, ip, port, db_name):
         self.client = MongoClient(ip, port)  # get client
@@ -20,7 +20,7 @@ class Database():
             print("Failed to connect to database")
             exit()
 
-        self.drop_database()  # remove all data from db
+        #self.drop_database()  # remove all data from db
         self.flights = self.db.flights
         self.airports = self.db.airports
         self.adj = self.db.adj
@@ -40,7 +40,7 @@ class Database():
                       "dest": dest}
 
         for key, val in kwargs.items():
-            new_flight[key] = float(val)
+            new_flight[key] = val
 
         return self.flights.insert_one(new_flight)
 
@@ -65,12 +65,13 @@ class Database():
         return list(group)[0]["ids"]
 
 
-    def add_to_adj(self, criterion, orig, dest, thru, weight):
+    def add_to_adj(self, criterion, orig, dest, thru, weight, last_flight):
         new_adj = {
             "criterion": criterion.name,
             "orig": orig,
             "dest": dest,
             "thru": thru,
+            "last_flight": last_flight,
             "weight": weight
         }
         self.adj.insert_one(new_adj)
@@ -79,7 +80,7 @@ class Database():
         target = {"criterion": criterion.name, "orig": orig, "dest": dest}
         return self.adj.find_one(target)
 
-    def update_adj(self, criterion, orig, dest, thru, weight):
+    def update_adj(self, criterion, orig, dest, thru, weight, last_flight):
         query = {
             "criterion": criterion.name,
             "orig": orig,
@@ -88,7 +89,8 @@ class Database():
 
         new_val = {"$set": {
             "thru": thru,
-            "weight": weight
+            "weight": weight,
+            "last_flight": last_flight
             }
         }
 

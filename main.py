@@ -3,11 +3,35 @@ from connecting_flights import ConnectingFlight
 import tkinter
 from tkinter import *
 from tkinter.ttk import *
+import csv
+
+def import_route_csv(cf, filename):
+    with open(filename, 'r') as routedata:
+        routes_to_add = []
+        routereader = csv.DictReader(routedata)
+        for route in routereader:
+            orig = route["orig"]
+            dest = route["dest"]
+            airline = route["airline"]
+            no = route["no"]
+            price = route["price"]
+            duration = route["duration"]
+            distance = route["distance"]
+            routes_to_add.append([
+                orig,
+                dest,
+                {"airline": airline, "no": no, "price": price,
+                 "duration": duration, "distance": distance}
+            ])
+
+        cf.add_many_flight(routes_to_add)
+        print("Successfully imported data")
+
 
 if __name__ == '__main__':
     db = Database('localhost', 27017, "connecting_flight")
+    db.drop_database()
     cf = ConnectingFlight(db)
-
     # data from: https://en.wikipedia.org/wiki/Shortest_path_problem#/media/File:Shortest_path_with_direct_weights.svg
     """cf.add_many_flight([["a", "b", {"price": 4, "time": 1}],
                         ["a", "c", {"price": 2, "time": 2}],

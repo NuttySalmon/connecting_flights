@@ -11,16 +11,19 @@ class ConnectingFlight:
 
     def add_many_flight(self, arr):
         '''
-        Accept list of list
+        Accept list of list, format: [orig, dest, **weights]
         '''
         for new_flight in arr:
-            self.db.add_flight(new_flight[0], new_flight[1], **new_flight[2])
+            orig = new_flight[0]
+            dest = new_flight[1]
+            self.db.add_flight(orig, dest, **new_flight[2])
 
         self.calc_all()
         print("ok")
 
     def calc_all(self):
         self.db.clear_adj()
+        print("Doing calculation...")
         # calculate shortest path for each criterion
         for cri in Database.Criterion:
             print("Calculating for {}".format(cri.name))
@@ -56,16 +59,17 @@ class ConnectingFlight:
                     # calculate new weight if using intermediate vertex
                     new_weight = orig_to_thru["weight"] + thru_to_dest["weight"]
                     last_path = thru_to_dest["thru"]
+                    last_flight = thru_to_dest["last_flight"]
                     orig_adj = self.db.get_adj(criterion, orig, dest)
 
                     if orig_adj is None:  # if no path was discovered before
                         self.db.add_to_adj(criterion, orig, dest, last_path, 
-                                           new_weight)
+                                           new_weight, last_flight)
                     else:
                         old_weight = orig_adj["weight"]
                         if new_weight < old_weight:
                             self.db.update_adj(criterion, orig, dest,
-                                               last_path, new_weight)
+                                               last_path, new_weight, last_flight)
 
         
 
@@ -120,7 +124,7 @@ class ConnectingFlight:
 
         output["path"] = shortest[::-1]
         output["total_weight"] = total
-        return output 
+        return output
 
     def get_str_from_cri(self, criterion, target):
         '''
@@ -129,7 +133,7 @@ class ConnectingFlight:
 
         if criterion == Database.Criterion.price:
             return "${}".format('%.2f' % target)
-        elif criterion == Database.Criterion.time:
+        elif criterion == Database.Criterion.duration:
             return "{}h {}m".format(target // 60, target % 60)
         elif criterion == Database.Criterion.distance:
             return "{} miles".format(target)
@@ -144,9 +148,17 @@ class ConnectingFlight:
             connected = self.db.all_flights_from(orig)
             for flight in connected:
                 dest = flight["dest"]
+                last_flight = (flight["airline"], flight["no"])
                 try:
                     weight = flight[weight_name]
-                    self.db.add_to_adj(criterion, orig, dest, orig, weight)
+                    find_existing = self.db.get_adj(criterion, orig, dest)
+                    if find_existing is None:
+                        self.db.add_to_adj(criterion, orig, dest, orig, weight, last_flight)
+                        continue
+
+                    if weight < find_existing["weight"]:
+                        self.db.update_adj(criterion, orig, dest, orig, weight, last_flight)
+
                 except KeyError:
                     pass
 
