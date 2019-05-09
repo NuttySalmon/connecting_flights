@@ -1,11 +1,11 @@
 """db setup"""
-from enum import Enum
+from enum import IntEnum
 from pymongo import MongoClient, errors
 
 
 class Database():
 
-    Criterion = Enum('Criterion', 'price duration distance')
+    Criterion = IntEnum('Criterion', 'price duration distance')
 
     def __init__(self, ip, port, db_name):
         self.client = MongoClient(ip, port)  # get client
@@ -72,7 +72,7 @@ class Database():
             "dest": dest,
             "thru": thru,
             "last_flight": last_flight,
-            "weight": weight
+            "weight": float(weight)
         }
         self.adj.insert_one(new_adj)
 
@@ -89,7 +89,7 @@ class Database():
 
         new_val = {"$set": {
             "thru": thru,
-            "weight": weight,
+            "weight": float(weight),
             "last_flight": last_flight
             }
         }
@@ -102,7 +102,7 @@ class Database():
             "dest": dest
         }
         target = self.flights.find_one(query)
-        return target[criterion.name]  # return weight
+        return float(target[criterion.name])  # return weight
 
     def clear_adj(self):
         self.adj.drop()

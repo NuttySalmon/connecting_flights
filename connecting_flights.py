@@ -6,7 +6,8 @@ class ConnectingFlight:
         self.db = database
 
     def add_one_flight(self, orig, dest, **kwargs):
-        self.db.add_flight(orig, dest, kwargs)
+        print(kwargs)
+        self.db.add_flight(orig, dest, **kwargs)
         self.calc_all()
 
     def add_many_flight(self, arr):
@@ -57,7 +58,7 @@ class ConnectingFlight:
                         continue 
 
                     # calculate new weight if using intermediate vertex
-                    new_weight = orig_to_thru["weight"] + thru_to_dest["weight"]
+                    new_weight = float(orig_to_thru["weight"]) + float(thru_to_dest["weight"])
                     last_path = thru_to_dest["thru"]
                     last_flight = thru_to_dest["last_flight"]
                     orig_adj = self.db.get_adj(criterion, orig, dest)
@@ -66,7 +67,7 @@ class ConnectingFlight:
                         self.db.add_to_adj(criterion, orig, dest, last_path, 
                                            new_weight, last_flight)
                     else:
-                        old_weight = orig_adj["weight"]
+                        old_weight = float(orig_adj["weight"])
                         if new_weight < old_weight:
                             self.db.update_adj(criterion, orig, dest,
                                                last_path, new_weight, last_flight)
@@ -111,14 +112,15 @@ class ConnectingFlight:
 
         start = orig
         end = dest
-        total = 0
+        total = 0.0
         while start != end:
             adj = self.db.get_adj(criterion, start, end)
             if adj is None:
                 break
             mid = adj["thru"]
-            weight = self.db.get_weight(criterion, mid, end)
-            shortest.append((mid, end, weight))
+            weight = float(self.db.get_weight(criterion, mid, end))
+            airline_id = adj["last_flight"]
+            shortest.append((mid, end, weight, airline_id))
             total += weight
             end = mid
 
@@ -151,13 +153,13 @@ class ConnectingFlight:
                 dest = flight["dest"]
                 last_flight = (flight["airline"], flight["no"])
                 try:
-                    weight = flight[weight_name]
+                    weight = float(flight[weight_name])
                     find_existing = self.db.get_adj(criterion, orig, dest)
                     if find_existing is None:
                         self.db.add_to_adj(criterion, orig, dest, orig, weight, last_flight)
                         continue
 
-                    if weight < find_existing["weight"]:
+                    if weight < float(find_existing["weight"]):
                         self.db.update_adj(criterion, orig, dest, orig, weight, last_flight)
 
                 except KeyError:
