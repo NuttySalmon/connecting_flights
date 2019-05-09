@@ -120,7 +120,8 @@ class ConnectingFlight:
 
         output["path"] = shortest[::-1]
         output["total_weight"] = total
-        return output 
+        return output
+
 
     def get_str_from_cri(self, criterion, target):
         '''

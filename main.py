@@ -51,8 +51,9 @@ if __name__ == '__main__':
                     crit = price
                 elif crit == "3":
                     crit = distance
-                cf.get_shortest_floyd_warshal(crit, origin_shortest, dest_shortest)
-                cf.print_floyd_warshal(crit)
+                short = cf.get_shortest_floyd_warshal(crit, origin_shortest, dest_shortest)
+                print(short)
+                menu()
             elif option == "q":
                 break
             else:
