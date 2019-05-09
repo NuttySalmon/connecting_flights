@@ -17,9 +17,8 @@ if __name__ == '__main__':
                         ["e", "d", {"price": 4, "time": 3}],
                         ["d", "f", {"price": 11, "time": 3}]])
                         """
-
-
     # cf.print_floyd_warshal(Database.Criterion.price)
+
     def menu():
         print(
             "Welcome, choose an option (Enter 'q' to quit) : \n 1. Add Airport \n 2. Add  flight \n 3. Find shortest path")
@@ -38,7 +37,8 @@ if __name__ == '__main__':
                 dest_add = input("Enter a destination airport: ")
                 price = input("Enter price: ")
                 time = input("Enter time: ")
-                cf.add_many_flight([[origin_add, dest_add, {"price": price, "time": time}]])
+                distance = input("Enter distance: ")
+                cf.add_many_flight([[origin_add, dest_add, {"price": price, "time": time, "distance": distance}]])
                 menu()
             elif option == "3":
                 origin_shortest = input("Enter an origin airport: ")
