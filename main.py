@@ -20,13 +20,22 @@ if __name__ == '__main__':
 
     # cf.print_floyd_warshal(Database.Criterion.price)
     print("Welcome, Choose an option: \n 1. Add Airport \n 2. Find shortest path")
+    price = db.Criterion.price
+    time = db.Criterion.time
+    distance = db.Criterion.distance
     option = input()
     if option == "1":
         origin_add = input("Enter an origin airport: ")
         dest_add = input("Enter a destination airport: ")
-        cf.add_one_flight(origin_add, dest_add)
+        db.add_flight(origin_add, dest_add)
     if option == "2":
         origin_shortest = input("Enter an origin airport: ")
         dest_shortest = input("Enter a destination airport: ")
-        crit = input("Enter criterion: ")
+        crit = input("Choose criterion: \n 1. Time \n 2. Price \n 3. Distance ")
+        if crit == "1":
+            crit = time
+        elif crit == "2":
+            crit = price
+        elif crit == "3":
+            crit = distance
         cf.get_shortest_floyd_warshal(crit, origin_shortest, dest_shortest)
