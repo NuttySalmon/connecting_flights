@@ -26,8 +26,7 @@ class Database():
         self.adj = self.db.adj
 
     def add_airport(self, airport):
-        result = self.airports.find({"id": airport})
-        if result.count() == 0:
+        if self.airports.count_documents({"id": airport}) == 0:
             self.airports.insert_one({"id": airport})
 
     """Add flight to db"""
