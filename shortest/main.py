@@ -1,9 +1,5 @@
-from database import Database
-from connecting_flights import ConnectingFlight
-from os import system, name 
-#import tkinter
-#from tkinter import *
-#from tkinter.ttk import *
+from . import Database, ConnectingFlights
+from os import system, name
 import csv
 
 def import_route_csv(cf, filename):
@@ -25,25 +21,22 @@ def import_route_csv(cf, filename):
                  "duration": duration, "distance": distance}
             ])
 
-        cf.add_many_flight(routes_to_add)
+        cf.add_many_flights(routes_to_add)
         print("Successfully imported data")
         routedata.close()
 
 def clear():
-    # for windows
-    if name == 'nt':
+    '''Clear screen'''
+    if name == 'nt':  # for windows
         _ = system('cls')
-
-    # for mac and linux
-    else:
+    else:  # for unix
         _ = system('clear')
 
 
-if __name__ == '__main__':
-    db = Database('localhost', 27017, "connecting_flight")
-    cf = ConnectingFlight(db)
-    clear()
-    
+
+
+    # menu
+def menu(db, cf):
     while True:
         clear()
         print(
@@ -68,7 +61,7 @@ if __name__ == '__main__':
             all_airports = db.all_airports_list()
             for airport in all_airports:
                 print(airport)
-
+            print("\nCount: {}".format(len(all_airports)))
             input("\nPress enter to continue")
             continue
 
@@ -78,20 +71,20 @@ if __name__ == '__main__':
             no = input("Enter flight number: ")
             origin_add = input("Enter an origin airport: ")
             dest_add = input("Enter a destination airport: ")
-            price = input("Enter price: ")
-            duration = input("Enter duration: ")
-            distance = input("Enter distance: ")
-            cf.add_one_flight(origin_add, dest_add,
-                              **{"price": price,
-                                 "duration": duration,
-                                 "distance": distance,
-                                 "airline": airline,
+            price = input("Enter price: $")
+            duration = input("Enter duration (minutes): ")
+            distance = input("Enter distance (miles): ")
+            cf.add_one_flight(origin_add.upper(), dest_add.upper(),
+                              **{"price": float(price),
+                                 "duration": int(round(duration)),
+                                 "distance": int(round(distance)),
+                                 "airline": airline.upper(),
                                  "no": no})
             continue
 
         elif option == "4":
-            origin_shortest = input("Enter an origin airport: ")
-            dest_shortest = input("Enter a destination airport: ")
+            origin_shortest = input("Enter an origin airport: ").upper()
+            dest_shortest = input("Enter a destination airport: ").upper()
             print("Choose criterion:")
             for c in Database.Criterion:
                 print("{}. {}".format(c.value, c.name))
@@ -99,15 +92,36 @@ if __name__ == '__main__':
             crit = Database.Criterion(int(crit_no))
             try:
 
-                short = cf.get_shortest_floyd_warshal(crit, origin_shortest, dest_shortest)
+                short = cf.get_shortest_floyd_warshal(crit, origin_shortest,
+                                                      dest_shortest)
+
+                flights = short["path"]
+                clear()
+                if len(flights) == 0:
+                    print("No data")
+                else:
+                    total = cf.get_str_from_cri(crit, short["total_weight"])
+                    print("Total weight: {}".format(total))
+                    for step, flight in enumerate(flights):
+                        weight = cf.get_str_from_cri(crit, flight[2])
+                        orig, dest, info = flight[0], flight[1], flight[3]
+                        airline, no = info
+                        print("{}. {}-{}  {} {}  {}"
+                              .format(step+1, orig, dest, airline, no, weight))
+
             except ValueError:
                 print("Invalid choice")
-                break
+                continue
 
-            print(short)
+            #print(short)
             input("\nPress enter to continue")
             continue
 
         elif option == "q":
             break
 
+if __name__ == '__main__':
+    db = Database('localhost', 27017, "connecting_flight")
+    cf = ConnectingFlights(db)
+    menu(db, cf)
+    clear()

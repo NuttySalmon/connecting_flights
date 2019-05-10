@@ -1,7 +1,7 @@
-from database import Database
+from . import Database
 import time
 
-class ConnectingFlight:
+class ConnectingFlights:
     def __init__(self, database):
         self.db = database
 
@@ -10,7 +10,7 @@ class ConnectingFlight:
         self.db.add_flight(orig, dest, **kwargs)
         self.calc_all()
 
-    def add_many_flight(self, arr):
+    def add_many_flights(self, arr):
         '''
         Accept list of list, format: [orig, dest, **weights]
         '''
@@ -26,11 +26,11 @@ class ConnectingFlight:
         print("Doing calculation...")
         # calculate shortest path for each criterion
         for cri in Database.Criterion:
-            print("Calculating for {}".format(cri.name))
+            print("Calculating for {}...".format(cri.name))
             t1 = time.time()
             self.floyd_warshal(cri)
             t2 = time.time()
-            print(t2-t1)
+            print("used {}s.\n".format(t2-t1))
             
     def floyd_warshal(self, criterion):
         '''

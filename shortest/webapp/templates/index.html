@@ -12,9 +12,9 @@
 
   <body>
     <div class="jumbotron jumbotron-fluid"
-    style = "background-image: url(https://lh4.googleusercontent.com/J_d8ihtnZOTiy0MQ5POnhv5c-PvDSHD0VcZkqsHtxZaD4omzMzGwKxt3yzMTAxStiWDNF7ms8ADrlw=w1925-h947-rw)">
+    style = "background-image: url({{ url_for('static', filename='conn.jpg') }})">
       <div class="container">
-        <h1 class="display-4">Connected flights</h1>
+        <h1 class="display-4">Connecting Flights</h1>
         <p class="lead">Shortest path through Floyd-Warshall algorithm</p>
       </div>
     </div>
@@ -52,9 +52,11 @@
 	<div class="row">
 	<div class="container">
 		<ul class="list-group">
+		{%if total != ""%}
 			<li class="list-group-item">
-				<h3>Loweset {{total}}</h3>
+				<h3>Lowest {{total}}</h3>
 			</li>
+		{%endif%}
 		{%for path in result%}
 	    	<li class="list-group-item"> 
 	    		<div class="container">
