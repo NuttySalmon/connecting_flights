@@ -141,7 +141,7 @@ class ConnectingFlight:
         if criterion == Database.Criterion.price:
             return "${}".format('%.2f' % target)
         elif criterion == Database.Criterion.duration:
-            return "{}h {}m".format(target // 60, target % 60)
+            return "{}h {}m".format(int(target // 60), int(target % 60))
         elif criterion == Database.Criterion.distance:
             return "{} miles".format(target)
 
