@@ -1,6 +1,7 @@
 # Connecting Flights
 
-Application to find lowest price, shortest distance, or duration of connecting flights through [Floyd-Warshall algorithm](http://www-math.mit.edu/~rothvoss/18.304.1PM/Presentations/1-Chandler-18.304lecture1.pdf). Presentation slides of the project can be found [here](https://docs.google.com/presentation/d/1rhBlG6i2Wh3xkYLhf-2lLqaB5DSqNwVw8vrsuk5ShGk/edit?usp=sharing)
+Application to find lowest price, shortest distance, or duration of connecting flights through [Floyd-Warshall algorithm](http://www-math.mit.edu/~rothvoss/18.304.1PM/Presentations/1-Chandler-18.304lecture1.pdf). 
+Presentation slides of the project can be found [here](https://docs.google.com/presentation/d/1rhBlG6i2Wh3xkYLhf-2lLqaB5DSqNwVw8vrsuk5ShGk/edit?usp=sharing).
 
 ![alt text](./screenshot.jpg "screenshot")
 
@@ -28,7 +29,7 @@ Run `python run_webapp.py` and go to `localhost:5000` on your browser. _Note:_ d
 ## Importing CSV
 Sample data `scaled_down.csv` can be found in the `resources` directory and can be imported through the console interface.
 
-`scaled_down.csv` is a scaled down version of `raw_data.csv` using the script`scale_down_csv.py` we created. `raw_data.csv` is not recommended to be imported since the data size is too big and with no price information avaliable.
+`scaled_down.csv` is a scaled down version of US Bureau of Transportation data `raw_data.csv`, procressed using the script `scale_down_csv.py` we created. `raw_data.csv` is not recommended to be imported since the data size is too big and with no price information avaliable.
 
 Sample quaries to try to get more than one flight in shortest-path:
 
