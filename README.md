@@ -1,16 +1,20 @@
 # Connecting Flights
-Application to find lowest price, shortest distance, or  of connecting flights through [Floyd-Warshall algorithm](http://www-math.mit.edu/~rothvoss/18.304.1PM/Presentations/1-Chandler-18.304lecture1.pdf).
 
-Presentation slides of the project can be found [here](https://docs.google.com/presentation/d/1rhBlG6i2Wh3xkYLhf-2lLqaB5DSqNwVw8vrsuk5ShGk/edit?usp=sharing)
+Application to find lowest price, shortest distance, or duration of connecting flights through [Floyd-Warshall algorithm](http://www-math.mit.edu/~rothvoss/18.304.1PM/Presentations/1-Chandler-18.304lecture1.pdf). Presentation slides of the project can be found [here](https://docs.google.com/presentation/d/1rhBlG6i2Wh3xkYLhf-2lLqaB5DSqNwVw8vrsuk5ShGk/edit?usp=sharing)
+
+![alt text](./screenshot.jpg "screenshot")
+
+<br/>
+
 ## Dependencies
 Python version 3.7 is used.
-
-Modules:
+`requirements.txt` can be used by `pip` to install all the dependencies:
 * pymongo
 * flask
 * flask-wtf
 * wtforms
 * pytest
+
 
 ## Running the program
 Before running, make sure you have a __MongoDB running on `localhost:27017`__ and all the dependencies installed.
