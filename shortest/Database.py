@@ -105,3 +105,6 @@ class Database():
 
     def clear_adj(self):
         self.adj.drop()
+
+    def all_flights(self):
+        return self.flights.find()
