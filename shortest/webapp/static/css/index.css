@@ -1,0 +1,14 @@
+.display-4 {
+  text-shadow: 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white, 0 0 50px white
+}
+
+.lead{
+    text-shadow: 
+0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white, 0 0 20px white
+}
+
+.back{
+    width: 40rem;
+    background-size: 31rem 8rem;
+    background-repeat: no-repeat;
+}
