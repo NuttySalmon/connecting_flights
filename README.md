@@ -8,6 +8,7 @@ Application to find lowest price, shortest distance, or duration of connecting f
 ## Dependencies
 Python version 3.7 is used.
 `requirements.txt` can be used by `pip` to install all the dependencies:
+
 *  pymongo
 *  flask
 *  flask-wtf
@@ -23,22 +24,20 @@ Run `python start.py` in directory
 
 __To run web interface:__
 Run `python run_webapp.py` and go to `localhost:5000` on your browser. _Note:_ data have to be imported or added using the console interface.
-<br/>
 
 ## Importing CSV
 Sample data is provided in the `resources` directory and can be imported through the console interface.
 
-`scaled_down.csv` is a scaled down version of `raw_data.csv` using the script`scale_down_csv.py` we created.
-
-`scaled_down.csv` should be used since data in `raw_data.csv` is too big to procress.
+`scaled_down.csv` is a scaled down version of `raw_data.csv` using the script`scale_down_csv.py` we created. `raw_data.csv` is not optimal to be imported since the data size is too big and with no price information avaliable.
 
 Sample quaries to try to get more than one flight in shortest-path:
+
 *  SEA to ATL, price
 *  SFO to MIA, price
 *  SFO to ATL, distance, price
 
 #### More sample data
-CSV from [US Bureau of Transportation](https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236) can be used with the program. __The downloaded CSV is NOT ready to be imported__, manipulation to the data is required. Check the fields `Reporting_Airline`, `Flight_Number_Reporting_Airline`, `Origin`, `Dest`, `CRSElapsedTime`, and `Distance` when downloading CSV.
+CSV from [US Bureau of Transportation](https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236) can be used with the program. __The downloaded CSV is NOT ideally ready to be imported__, manipulation to the data is required. Check the fields `Reporting_Airline`, `Flight_Number_Reporting_Airline`, `Origin`, `Dest`, `CRSElapsedTime`, and `Distance` when downloading CSV.
 
 
 __To make the raw data ready for import__, 
