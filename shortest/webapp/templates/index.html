@@ -20,21 +20,23 @@
 	<div class="container">
 		<form method="POST" action="">
 			<div class="form-row">
+        {{ form.hidden_tag() }}
+
 				<div class="col">
 			    	       
-			        	{{ form.orig.label(class="form-control-lable") }}
-			        	{{ form.orig(class="form-control") }}
+        	{{ form.orig.label(class="form-control-lable") }}
+        	{{ form.orig(class="form-control") }}
 					
 				</div>
 				<div class="col">	
-						{{ form.dest.label(class="form-control-lable")}}     
-				        {{ form.dest(class="form-control") }}
+					{{ form.dest.label(class="form-control-lable")}}     
+	        {{ form.dest(class="form-control") }}
 					
 				</div>
 				<div class="col">
-						{{ form.cri.label(class="form-control-lable")}}     
-					   	{{ form.cri(class="form-control") }}
-					
+          {{ form.cri.label(class="form-control-lable")}}  
+          {{ form.cri(class="form-control") }}	 
+					</select>
 				</div>
 			</div>
 			<br>

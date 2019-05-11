@@ -17,7 +17,8 @@ def setup_app():
         result = []
         total = ""
 
-        if (form.orig.data, form.dest.data, form.cri.data) != (None, None, None):
+        if form.orig.data != "None" and form.dest.data != "None" and form.cri.data != "None":
+            print(form.orig.data, form.dest.data, form.cri.data)
             cri = Database.Criterion[form.cri.data]
             search_orig = form.orig.data.split()[0].upper()
             search_dest = form.dest.data.split()[0].upper()
