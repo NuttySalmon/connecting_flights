@@ -53,6 +53,21 @@ def test_add_many_flights():
 
     assert result == 1
 
+def test_adj_init_with_duplication():
+    cf = setup()
+    orig = "a"
+    dest = "b"
+    cf.add_many_flights([[orig, dest, {"price": 4}],
+                         [orig, dest, {"price": 1}],
+                         [orig, dest, {"price": 5}]])
+
+    result = list(cf.db.adj.find({"orig": orig, "dest": dest}))
+    size = len(result)
+    weight = result[0]["weight"]
+
+    assert size == 1 and weight == 1
+
+
 def test_shortest_path():
     # based on this graph: 
     #https://en.wikipedia.org/wiki/Shortest_path_problem#/media/File:Shortest_path_with_direct_weights.svg
@@ -73,4 +88,3 @@ def test_shortest_path():
     expected = [('a', 'c'), ('c', 'e'), ('e', 'd'), ('d', 'f')]
     print(result)
     assert expected == shortest
-

@@ -148,24 +148,26 @@ class ConnectingFlights:
         """Initialize adj with flights"""
 
         weight_name = criterion.name
-        for orig in all_airports:  # calculate for all airport
-            connected = self.db.all_flights_from(orig)
-            for flight in connected:
-                dest = flight["dest"]
-                try:
-                    last_flight = (flight["airline"], flight["no"])
-                except KeyError:  # if not found
-                    last_flight = None
-                try:
-                    weight = float(flight[weight_name])
-                    find_existing = self.db.get_adj(criterion, orig, dest)
-                    if find_existing is None:
-                        self.db.add_to_adj(criterion, orig, dest, orig, weight, last_flight)
-                        continue
+        all_flights = self.db.all_flights()
+        for flight in all_flights:
+            orig = flight["orig"]
+            dest = flight["dest"]
+            try:
+                last_flight_info = (flight["airline"], flight["no"])
+            except KeyError:  # if not found
+                last_flight_info = None
+            try:
+                weight = float(flight[weight_name])
+                find_existing = self.db.get_adj(criterion, orig, dest)
+                if find_existing is None:
+                    self.db.add_to_adj(criterion, orig, dest, orig, weight, 
+                                       last_flight_info)
+                    continue
 
-                    if weight < float(find_existing["weight"]):
-                        self.db.update_adj(criterion, orig, dest, orig, weight, last_flight)
+                if weight < float(find_existing["weight"]):
+                    self.db.update_adj(criterion, orig, dest, orig, weight, 
+                                       last_flight_info)
 
-                except KeyError:
-                    pass
+            except KeyError:
+                pass
 
