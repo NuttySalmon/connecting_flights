@@ -1,6 +1,0 @@
-test_a: 
-SEA to ATL
-SFO to MIA
-
-dist: SFO to ATL
-{"orig": "SFO",  $where: "return this.orig != this.thru" }

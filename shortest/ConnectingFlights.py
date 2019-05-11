@@ -132,8 +132,8 @@ class ConnectingFlights:
         output["total_weight"] = total
         return output
 
-
-    def get_str_from_cri(self, criterion, target):
+    @staticmethod
+    def get_str_from_cri(criterion, target):
         '''
         Return formatted string with associated unit
         '''
