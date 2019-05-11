@@ -10,6 +10,7 @@ pymongo = "*"
 flask = "*"
 flask-wtf = "*"
 wtforms = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.7"
