@@ -1,3 +1,4 @@
-from shortest.webapp.server import get_app
+from shortest.webapp.server import setup_app
+
 if __name__ == "__main__":
-    get_app().run()
+    setup_app().run()
