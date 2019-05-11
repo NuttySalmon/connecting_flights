@@ -4,20 +4,19 @@ Application to find lowest price, shortest distance, or duration of connecting f
 
 ![alt text](./screenshot.jpg "screenshot")
 
-<br/>
 
 ## Dependencies
 Python version 3.7 is used.
 `requirements.txt` can be used by `pip` to install all the dependencies:
-* pymongo
-* flask
-* flask-wtf
-* wtforms
-* pytest
+*  pymongo
+*  flask
+*  flask-wtf
+*  wtforms
+*  pytest
 
 
 ## Running the program
-Before running, make sure you have a __MongoDB running on `localhost:27017`__ and all the dependencies installed.
+Before running, make sure you have a __MongoDB running__ on `localhost:27017` and all the dependencies installed.
 
 __To run console interface:__
 Run `python start.py` in directory
@@ -34,9 +33,9 @@ Sample data is provided in the `resources` directory and can be imported through
 `scaled_down.csv` should be used since data in `raw_data.csv` is too big to procress.
 
 Sample quaries to try to get more than one flight in shortest-path:
-* SEA to ATL, price
-* SFO to MIA, price
-* SFO to ATL, distance, price
+*  SEA to ATL, price
+*  SFO to MIA, price
+*  SFO to ATL, distance, price
 
 #### More sample data
 CSV from [US Bureau of Transportation](https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236) can be used with the program. __The downloaded CSV is NOT ready to be imported__, manipulation to the data is required. Check the fields `Reporting_Airline`, `Flight_Number_Reporting_Airline`, `Origin`, `Dest`, `CRSElapsedTime`, and `Distance` when downloading CSV.
