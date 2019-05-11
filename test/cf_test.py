@@ -41,7 +41,7 @@ def test_add_many_flights():
         data.append([orig, dest, {"price": price, "time": time}])
 
     cf.add_many_flights(data)
-   
+
     sample = data[random.randrange(e_size)]
     orig1 = sample[0]
     dest1 = sample[1]
@@ -80,7 +80,7 @@ def test_shortest_path():
                         ["e", "d", {"price": 4, "time": 3}],
                         ["d", "f", {"price": 11, "time": 3}]])
     result = cf.get_shortest_floyd_warshal(cf.db.Criterion.price, "a", "f")
-    
+
     shortest = []
     for flight in result["path"]:
         shortest.append((flight[0], flight[1]))

@@ -3,6 +3,7 @@ from os import system, name
 import csv
 
 def import_route_csv(cf, filename):
+    """Use data in given csv file"""
     with open(filename, 'r') as routedata:
         routes_to_add = []
         routereader = csv.DictReader(routedata)
@@ -14,6 +15,7 @@ def import_route_csv(cf, filename):
             price = route["price"]
             duration = route["duration"]
             distance = route["distance"]
+
             routes_to_add.append([
                 orig,
                 dest,
@@ -25,6 +27,7 @@ def import_route_csv(cf, filename):
         print("Successfully imported data")
         routedata.close()
 
+
 def clear():
     '''Clear screen'''
     if name == 'nt':  # for windows
@@ -33,10 +36,8 @@ def clear():
         _ = system('clear')
 
 
-
-
-    # menu
 def menu(db, cf):
+    """Run console ui"""
     while True:
         clear()
         print(
@@ -86,7 +87,7 @@ def menu(db, cf):
             origin_shortest = input("Enter an origin airport: ").upper()
             dest_shortest = input("Enter a destination airport: ").upper()
             print("Choose criterion:")
-            for c in Database.Criterion:
+            for c in Database.Criterion:  # list all avaliable weight criteria
                 print("{}. {}".format(c.value, c.name))
             crit_no = input("Choice: ")
             crit = Database.Criterion(int(crit_no))
@@ -119,6 +120,7 @@ def menu(db, cf):
 
         elif option == "q":
             break
+
 
 if __name__ == '__main__':
     db = Database('localhost', 27017, "connecting_flight")

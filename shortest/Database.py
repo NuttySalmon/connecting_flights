@@ -4,10 +4,13 @@ from pymongo import MongoClient, errors
 
 
 class Database():
+    """Facilitate manipulation of data in database"""
 
-    Criterion = IntEnum('Criterion', 'price duration distance')
+    Criterion = IntEnum('Criterion', 'price duration distance')  # Criterions as weight for calulating shortest path
 
     def __init__(self, ip, port, db_name):
+        """Constructor"""
+
         self.client = MongoClient(ip, port)  # get client
         self.name = db_name
         self.db = self.client[db_name]
@@ -20,17 +23,18 @@ class Database():
             print("Failed to connect to database")
             exit()
 
-        #self.drop_database()  # remove all data from db
         self.flights = self.db.flights
         self.airports = self.db.airports
         self.adj = self.db.adj
 
     def add_airport(self, airport):
+        """Add airport if it does not exist already. Take airport id as string"""
+
         if self.airports.count_documents({"id": airport}) == 0:
             self.airports.insert_one({"id": airport})
 
-    """Add flight to db"""
     def add_flight(self, orig, dest, **kwargs):
+        """Add flight to db"""
 
         self.add_airport(orig)
         self.add_airport(dest)
@@ -43,17 +47,23 @@ class Database():
 
         return self.flights.insert_one(new_flight)
 
-    """Drop db"""
     def drop_database(self):
+        """Drop db"""
+
         self.client.drop_database(self.name)
 
     def all_flights_from(self, orig):
+        """Get all flights connected to give origin airport id"""
         return self.flights.find({"orig": orig})
 
     def all_airports(self):
+        """Returns all airports"""
+
         return self.airports.find({})
 
     def all_airports_list(self):
+        """Returns all airports as list of strings"""
+
         group = self.airports.aggregate([
             {"$group": {
                 "_id": None,
@@ -63,8 +73,9 @@ class Database():
 
         return list(group)[0]["ids"]
 
-
     def add_to_adj(self, criterion, orig, dest, thru, weight, last_flight):
+        """Add entry to adj"""
+
         new_adj = {
             "criterion": criterion.name,
             "orig": orig,
@@ -76,10 +87,13 @@ class Database():
         self.adj.insert_one(new_adj)
 
     def get_adj(self, criterion, orig, dest):
+        """Get adj entry"""
+
         target = {"criterion": criterion.name, "orig": orig, "dest": dest}
         return self.adj.find_one(target)
 
     def update_adj(self, criterion, orig, dest, thru, weight, last_flight):
+        """Update adj entry"""
         query = {
             "criterion": criterion.name,
             "orig": orig,
@@ -96,6 +110,8 @@ class Database():
         self.adj.update_one(query, new_val)
 
     def get_weight(self, criterion, orig, dest):
+        """Get weight of given flight"""
+
         query = {
             "orig": orig,
             "dest": dest
@@ -104,7 +120,11 @@ class Database():
         return float(target[criterion.name])  # return weight
 
     def clear_adj(self):
+        """Drop adj"""
+
         self.adj.drop()
 
     def all_flights(self):
+        """Return all flights"""
+
         return self.flights.find()

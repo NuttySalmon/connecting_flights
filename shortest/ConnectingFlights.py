@@ -3,8 +3,10 @@ import time
 
 class ConnectingFlights:
     """Class to calculate ConnectingFlights"""
+
     def __init__(self, database):
         """Constructor. Takes Database object"""
+
         self.db = database
 
     def add_one_flight(self, orig, dest, **kwargs):
@@ -24,6 +26,7 @@ class ConnectingFlights:
 
     def calc_all(self):
         """Calculate adjency table for all critera"""
+
         self.db.clear_adj()
         print("Doing calculation...")
         # calculate shortest path for each criterion
@@ -66,10 +69,10 @@ class ConnectingFlights:
                     last_flight = thru_to_dest["last_flight"]
 
                     # get existing adjency entry
-                    orig_adj = self.db.get_adj(criterion, orig, dest) 
+                    orig_adj = self.db.get_adj(criterion, orig, dest)
 
                     if orig_adj is None:  # if no path was discovered before, add.
-                        self.db.add_to_adj(criterion, orig, dest, last_path, 
+                        self.db.add_to_adj(criterion, orig, dest, last_path,
                                            new_weight, last_flight)
                     else:
                         # if new weight total is shorter,
@@ -109,6 +112,7 @@ class ConnectingFlights:
 
     def get_shortest_floyd_warshal(self, criterion, orig, dest):
         """Take criterion, origin, and destination and return shortest path info"""
+
         output = {}
         shortest = []
 
@@ -154,20 +158,22 @@ class ConnectingFlights:
             dest = flight["dest"]
             try:
                 last_flight_info = (flight["airline"], flight["no"])
-            except KeyError:  # if not found
+            except KeyError:  # if no info
                 last_flight_info = None
             try:
                 weight = float(flight[weight_name])
                 find_existing = self.db.get_adj(criterion, orig, dest)
                 if find_existing is None:
-                    self.db.add_to_adj(criterion, orig, dest, orig, weight, 
+                    # add to adj if none existing for this origin destination pair
+                    self.db.add_to_adj(criterion, orig, dest, orig, weight,
                                        last_flight_info)
                     continue
 
                 if weight < float(find_existing["weight"]):
-                    self.db.update_adj(criterion, orig, dest, orig, weight, 
+                    # update adjency with new weight and last fight if adj info
+                    # exists but new weight is smaller
+                    self.db.update_adj(criterion, orig, dest, orig, weight,
                                        last_flight_info)
 
             except KeyError:
-                pass
-
+                pass  # ignore if the specified weight attribute does not exist

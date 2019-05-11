@@ -23,6 +23,8 @@ def setup_app():
             search_orig = form.orig.data.split()[0].upper()
             search_dest = form.dest.data.split()[0].upper()
             dbresult = cf.get_shortest_floyd_warshal(cri, search_orig, search_dest)
+
+            # get flights in shortest path
             for flight in dbresult["path"]:
                 orig = flight[0]
                 dest = flight[1]
@@ -30,6 +32,7 @@ def setup_app():
                 airline, no = flight[3]
                 result.append({"orig": orig, "dest": dest, "weight": weight, 
                                "airline": airline, "no": no})
+
             total = cf.get_str_from_cri(cri, dbresult["total_weight"])
             print(result)
         return render_template("index.html", form=form, result=result, 

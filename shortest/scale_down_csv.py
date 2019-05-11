@@ -5,12 +5,16 @@ COST_FACTOR = 3.75
 #CUTDOWN_INDEX = 50000
 
 def convert(in_name, out_name, top_airlines, cutdown, closely):
+    """prepare given csv to be imported by cutting down and adding pricing"""
+
     data = {}
     with open(in_name, 'r') as routedata:
         routereader = csv.DictReader(routedata)
         for row in routereader:
             orig = row["ORIGIN"]
             dest = row["DEST"]
+
+            # make data have origin and destination mostly from the given top airports
             if closely and (orig not in top_airports or dest not in top_airports):
                 x = random.randint(0, cutdown)
                 if x != 0:
@@ -20,7 +24,7 @@ def convert(in_name, out_name, top_airlines, cutdown, closely):
 
             # if airline not in top_airlines:
             #     continue
-            
+
             no = row["OP_CARRIER_FL_NUM"]
             duration = int(float(row["CRS_ELAPSED_TIME"]))
             distance = int(float(row["DISTANCE"]))
@@ -28,16 +32,18 @@ def convert(in_name, out_name, top_airlines, cutdown, closely):
             flightinfo = [airline, no, orig, dest, duration, distance, price]
 
 
-            if (airline, no) not in data:  # ignore duplication
+            if (airline, no) not in data:  # ignore duplications
                 data[(airline, no)] = flightinfo
+
         routedata.close()
 
+    # write to new CSV
     with open(out_name, 'w') as outputcsv:
         csvwriter = csv.writer(outputcsv)
         csvwriter.writerow(["airline", "no", "orig", "dest", "duration",
                             "distance", "price"])
         flights = list(data.values())
-        count = 0
+        count = 0  # count entries
         for i in range(0, len(flights), cutdown):
             csvwriter.writerow(flights[i])
             count += 1
@@ -46,6 +52,8 @@ def convert(in_name, out_name, top_airlines, cutdown, closely):
 
 
 def price_cal(distance):
+    """random price from distance"""
+    
     return distance/COST_FACTOR * random.randint(5, 30)/10
 
 
