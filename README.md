@@ -28,7 +28,7 @@ __To run web interface:__
 Run `python run_webapp.py` and go to `localhost:5000` on your browser. _Note:_ data have to be imported or added using the console interface.
 
 ## Importing CSV
-Sample data `scaled_down.csv` can be found in the `resources` directory and can be imported through the console interface.
+Sample data `scaled_down.csv` can be found in the `resources` directory and can be imported through the console interface. You can do this by selecting option `Use CSV` and typing `./resources/import_ready.csv`.
 
 `scaled_down.csv` is a scaled down version of US Bureau of Transportation data `raw_data.csv`, procressed using the script `scale_down_csv.py` we created. `raw_data.csv` is not recommended to be imported since the data size is too big and with no price information avaliable.
 
