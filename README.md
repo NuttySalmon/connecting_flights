@@ -29,7 +29,7 @@ Run `python run_webapp.py` and go to `localhost:5000` on your browser. _Note:_ n
 ## Importing CSV
 Sample data `import_ready.csv` can be found in the `resources` directory and can be imported through the program's console interface `Use CSV` option.
 
-`import_ready.csv` is a scaled down version of [US Bureau of Transportation](https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236)'s data `raw_data.csv`, procressed using the script `scale_down_csv.py` we created. `raw_data.csv` is not recommended to be imported since the data size is too big and with no price information avaliable.
+`import_ready.csv` is a scaled down version of [US Bureau of Transportation](https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236)'s data `raw_data.csv`, processed using the script `scale_down_csv.py` we created. `raw_data.csv` is not recommended to be imported since the data size is too big and with no price information avaliable.
 
 Sample quaries to try to get more than one flight in shortest-path:
 
