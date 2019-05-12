@@ -4,6 +4,8 @@ import csv
 
 def import_route_csv(cf, filename):
     """Use data in given csv file"""
+
+    print("Importing...")
     with open(filename, 'r') as routedata:
         routes_to_add = []
         routereader = csv.DictReader(routedata)
@@ -75,12 +77,17 @@ def menu(db, cf):
             price = input("Enter price: $")
             duration = input("Enter duration (minutes): ")
             distance = input("Enter distance (miles): ")
-            cf.add_one_flight(origin_add.upper(), dest_add.upper(),
-                              **{"price": float(price),
-                                 "duration": int(duration),
-                                 "distance": int(distance),
-                                 "airline": airline.upper(),
-                                 "no": no})
+            try:
+                cf.add_one_flight(origin_add.upper(), dest_add.upper(),
+                                  **{"price": float(price),
+                                     "duration": int(float(duration)),
+                                     "distance": int(float(distance)),
+                                     "airline": airline.upper(),
+                                     "no": no})
+            except ValueError:
+                clear()
+                print("\nERROR: Invalid information. Flight was not added.")
+                input("\nPress enter to continue")
             continue
 
         elif option == "4":

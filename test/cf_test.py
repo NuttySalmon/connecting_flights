@@ -7,6 +7,7 @@ IP = "localhost"
 PORT = 27017
 DB_NAME = "connecting_flight_test"
 
+
 def setup():
     db = Database(IP, PORT, DB_NAME)
     db.drop_database()
@@ -52,6 +53,7 @@ def test_add_many_flights():
                                             "price": price1, "time": time1})
 
     assert result == 1
+
 
 def test_adj_init_with_duplication():
     cf = setup()

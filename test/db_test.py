@@ -3,10 +3,12 @@ IP = "localhost"
 PORT = 27017
 DB_NAME = "connecting_flight_test"
 
+
 def setup():
     db = Database(IP, PORT, DB_NAME)
     db.drop_database()
     return db
+
 
 def test_add_airport():
     db = setup()
@@ -15,6 +17,7 @@ def test_add_airport():
 
     result = db.airports.find_one({"id": id})
     assert result["id"] == id
+
 
 def test_add_duplicate_airport():
     db = setup()
@@ -25,6 +28,7 @@ def test_add_duplicate_airport():
 
     result = db.airports.count_documents({"id": id})
     assert result == 1
+
 
 def test_add_flight():
     db = setup()
@@ -46,6 +50,7 @@ def test_add_flight():
          })
     assert result == 1
 
+
 def test_auto_add_airport():
     db = setup()
     airline = "A"
@@ -58,5 +63,5 @@ def test_auto_add_airport():
     db.add_flight(orig, dest, airline=airline, no=no, price=price, distance=distance)
     result1 = db.airports.count_documents({"id": orig})
     result2 = db.airports.count_documents({"id": dest})
-    
+
     assert result1 == 1 and result2 == 1

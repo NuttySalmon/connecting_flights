@@ -32,10 +32,10 @@ class ConnectingFlights:
         # calculate shortest path for each criterion
         for cri in Database.Criterion:
             print("Calculating for {}...".format(cri.name))
-            t1 = time.time()
+            # t1 = time.time()
             self.floyd_warshal(cri)
-            t2 = time.time()
-            print("used {}s.\n".format(t2-t1))  # print time took for calculation
+            # t2 = time.time()
+            # print("used {}s.\n".format(t2-t1))  # print time took for calculation
 
     def floyd_warshal(self, criterion):
         """Generate shortest path data in db using floyd warshal algorithm"""
