@@ -11,14 +11,14 @@ Python version 3.7 is used.
 `requirements.txt` (for `pip`) and `Pipfile` (for `pipenv`) can be used to install all the dependencies:
 
 *  pymongo (3.8.0 or higher)
-*  flask
-*  flask-wtf
+*  flask (0.14.2 or higher)
+*  flask-wtf (0.14.2 or higher)
 *  wtforms
 *  pytest
 
 
 ## Running the program
-Before running, make sure you have a __MongoDB running__ on `localhost:27017` and all the dependencies installed.
+Before running, make sure you have a __MongoDB v4 running__ on `localhost:27017` and all the dependencies installed.
 
 __To run console interface:__
 Run `python start.py` in directory
