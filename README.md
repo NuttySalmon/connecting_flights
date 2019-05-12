@@ -8,14 +8,17 @@ Presentation slides of the project can be found [here](https://docs.google.com/p
 
 ## Dependencies
 Python version 3.7 is used.
-`requirements.txt` (for `pip`) and `Pipfile` (for `pipenv`) can be used to install all the dependencies:
 
+Modules:
 *  pymongo (3.8.0 or higher)
 *  flask (0.14.2 or higher)
 *  flask-wtf (0.14.2 or higher)
 *  wtforms
 *  pytest
 
+__Install with pip:__ cd to project directory and run `pip install -r requirements.txt`
+
+__Install with pipenv:__ cd to project directory and run `pipenv install`
 
 ## Running the program
 Before running, make sure you have a __MongoDB v4 running__ on `localhost:27017` and all the dependencies installed.
