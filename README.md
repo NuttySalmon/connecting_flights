@@ -2,7 +2,6 @@
 
 Application to find lowest price, shortest distance, or duration of connecting flights through [Floyd-Warshall algorithm](http://www-math.mit.edu/~rothvoss/18.304.1PM/Presentations/1-Chandler-18.304lecture1.pdf). 
 Presentation slides of the project can be found [here](https://docs.google.com/presentation/d/1rhBlG6i2Wh3xkYLhf-2lLqaB5DSqNwVw8vrsuk5ShGk/edit?usp=sharing).
-<br /> The documentation of the project can be found [here](https://docs.google.com/document/d/1tE2CqcxogBARtdbCOhyfkIuOBmGlZkC9BPJquxmPqso/edit). 
 
 ![alt text](./screenshot.jpg "screenshot")
 
@@ -34,7 +33,10 @@ In project directory, run
 ```   
 python run_webapp.py
 ```
-Go to `localhost:5000` on your browser to access the web interface. _Note:_ no data will be shown before data are added or imported using the console interface.
+and go to `localhost:5000` on your browser to access the web interface. 
+
+_Note:_ no data will be shown in query before data are added or imported using the console interface.
+
 
 ## Importing CSV
 Sample data ***import_ready.csv*** can be found in the *resources* directory. It can be imported through the "Use CSV" option in the program's console interface by putting "./resources/import_ready.csv" as path to file when importing.
