@@ -1,4 +1,4 @@
-from . import Database, ConnectingFlights
+from . import Database
 from os import system, name
 import csv
 
@@ -77,8 +77,8 @@ def menu(db, cf):
             distance = input("Enter distance (miles): ")
             cf.add_one_flight(origin_add.upper(), dest_add.upper(),
                               **{"price": float(price),
-                                 "duration": int(round(duration)),
-                                 "distance": int(round(distance)),
+                                 "duration": int(duration),
+                                 "distance": int(distance),
                                  "airline": airline.upper(),
                                  "no": no})
             continue
@@ -120,10 +120,3 @@ def menu(db, cf):
 
         elif option == "q":
             break
-
-
-if __name__ == '__main__':
-    db = Database('localhost', 27017, "connecting_flight")
-    cf = ConnectingFlights(db)
-    menu(db, cf)
-    clear()

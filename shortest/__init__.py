@@ -1,2 +1,2 @@
-from .Database import Database
-from .ConnectingFlights import ConnectingFlights
+from .database import Database
+from .connecting_flights import ConnectingFlights
