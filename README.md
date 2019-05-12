@@ -2,6 +2,7 @@
 
 Application to find lowest price, shortest distance, or duration of connecting flights through [Floyd-Warshall algorithm](http://www-math.mit.edu/~rothvoss/18.304.1PM/Presentations/1-Chandler-18.304lecture1.pdf). 
 Presentation slides of the project can be found [here](https://docs.google.com/presentation/d/1rhBlG6i2Wh3xkYLhf-2lLqaB5DSqNwVw8vrsuk5ShGk/edit?usp=sharing).
+<br /> The documentation of the project can be found [here](https://docs.google.com/document/d/1tE2CqcxogBARtdbCOhyfkIuOBmGlZkC9BPJquxmPqso/edit). 
 
 ![alt text](./screenshot.jpg "screenshot")
 
