@@ -8,9 +8,9 @@ Presentation slides of the project can be found [here](https://docs.google.com/p
 
 ## Dependencies
 Python version 3.7 is used.
-`requirements.txt` can be used by `pip` to install all the dependencies:
+`requirements.txt` (for `pip`) and `Pipfile` (for `pipenv`) can be used to install all the dependencies:
 
-*  pymongo
+*  pymongo (3.8.0 or higher)
 *  flask
 *  flask-wtf
 *  wtforms
@@ -24,12 +24,12 @@ __To run console interface:__
 Run `python start.py` in directory
 
 __To run web interface:__
-Run `python run_webapp.py` and go to `localhost:5000` on your browser. _Note:_ data have to be imported or added using the console interface.
+Run `python run_webapp.py` and go to `localhost:5000` on your browser. _Note:_ no data will be shown before data are added or imported using the console interface.
 
 ## Importing CSV
-Sample data `scaled_down.csv` can be found in the `resources` directory and can be imported through the console interface.
+Sample data `import_ready.csv` can be found in the `resources` directory and can be imported through the program's console interface `Use CSV` option.
 
-`scaled_down.csv` is a scaled down version of US Bureau of Transportation data `raw_data.csv`, procressed using the script `scale_down_csv.py` we created. `raw_data.csv` is not recommended to be imported since the data size is too big and with no price information avaliable.
+`import_ready.csv` is a scaled down version of [US Bureau of Transportation](https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236)'s data `raw_data.csv`, procressed using the script `scale_down_csv.py` we created. `raw_data.csv` is not recommended to be imported since the data size is too big and with no price information avaliable.
 
 Sample quaries to try to get more than one flight in shortest-path:
 
@@ -38,7 +38,7 @@ Sample quaries to try to get more than one flight in shortest-path:
 *  SFO to ATL, distance, price
 
 ### More sample data
-CSV from [US Bureau of Transportation](https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236) can be used with the program. __The downloaded CSV is NOT ideally ready to be imported__, manipulation to the data is required. Check the fields `Reporting_Airline`, `Flight_Number_Reporting_Airline`, `Origin`, `Dest`, `CRSElapsedTime`, and `Distance` when downloading CSV.
+[US Bureau of Transportation Statistics's Reporting Carrier On-Time Performance data](https://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236) can be downloaded as CSV to be used with the program. Check the fields `Reporting_Airline`, `Flight_Number_Reporting_Airline`, `Origin`, `Dest`, `CRSElapsedTime`, and `Distance` when downloading CSV. __The downloaded CSV is NOT ideally ready to be imported__ and manipulation to the data is required. 
 
 
 __To make the raw data ready for import__, 

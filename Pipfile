@@ -6,11 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pymongo = "*"
-flask = "*"
-flask-wtf = "*"
+pymongo = ">=3.8.0"
+flask = ">=0.14.2"
+flask-wtf = ">=0.14.2"
 wtforms = "*"
-pytest = "*"
+pytest = ">=4.5.0"
 
 [requires]
 python_version = "3.7"
