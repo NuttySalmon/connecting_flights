@@ -40,8 +40,8 @@ def convert(in_name, out_name, top_airlines, cutdown, closely):
     # write to new CSV
     with open(out_name, 'w') as outputcsv:
         csvwriter = csv.writer(outputcsv)
-        csvwriter.writerow(["airline", "no", "orig", "dest", "duration",
-                            "distance", "price"])
+        csvwriter.writerow(["OP_UNIQUE_CARRIER", "OP_CARRIER_FL_NUM", "ORIGIN",
+                            "DEST", "CRS_ELAPSED_TIME", "DISTANCE", "PRICE"])
         flights = list(data.values())
         count = 0  # count entries
         for i in range(0, len(flights), cutdown):
@@ -53,7 +53,7 @@ def convert(in_name, out_name, top_airlines, cutdown, closely):
 
 def price_cal(distance):
     """random price from distance"""
-    
+
     return distance/COST_FACTOR * random.randint(5, 30)/10
 
 

@@ -4,30 +4,38 @@ import csv
 
 def import_route_csv(cf, filename):
     """Use data in given csv file"""
+    try:
+        with open(filename, 'r') as routedata:
+            print("Reading import file...")
+            routes_to_add = []
+            routereader = csv.DictReader(routedata)
+            for route in routereader:
+                other_fields = {}
+                orig = route["ORIGIN"]
+                dest = route["DEST"]
+                other_fields["airline"] = route["OP_UNIQUE_CARRIER"]
+                other_fields["no"] = route["OP_CARRIER_FL_NUM"]
+                other_fields["duration"] = route["CRS_ELAPSED_TIME"]
+                other_fields["distance"] = route["DISTANCE"]
 
-    print("Importing...")
-    with open(filename, 'r') as routedata:
-        routes_to_add = []
-        routereader = csv.DictReader(routedata)
-        for route in routereader:
-            orig = route["orig"]
-            dest = route["dest"]
-            airline = route["airline"]
-            no = route["no"]
-            price = route["price"]
-            duration = route["duration"]
-            distance = route["distance"]
+                try:
+                    other_fields["price"] = route["PRICE"]
 
-            routes_to_add.append([
-                orig,
-                dest,
-                {"airline": airline, "no": no, "price": price,
-                 "duration": duration, "distance": distance}
-            ])
+                except KeyError:
+                    pass
+                routes_to_add.append([orig, dest, other_fields])
 
-        cf.add_many_flights(routes_to_add)
-        print("Successfully imported data")
-        routedata.close()
+            cf.add_many_flights(routes_to_add)
+
+            print("Successfully imported {} flights"
+                  .format(len(routes_to_add)))
+            routedata.close()
+
+    except FileNotFoundError:
+        print("ERROR: File Not found.")
+
+    except KeyError as e:
+        print("ERROR: Field not found in CSV: {}".format(e))
 
 
 def clear():
@@ -54,6 +62,7 @@ def menu(db, cf):
         option = input("Choice: ")
         clear()
         if option == "1":
+            print("WARNING: All existing data would be removed.")
             filename = input("File name: ")
             db.drop_database()
             import_route_csv(cf, filename)

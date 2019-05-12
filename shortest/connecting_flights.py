@@ -28,7 +28,7 @@ class ConnectingFlights:
         """Calculate adjency table for all critera"""
 
         self.db.clear_adj()
-        print("Doing calculation...")
+        print("Calculating shortest paths...")
         # calculate shortest path for each criterion
         for cri in Database.Criterion:
             print("Calculating for {}...".format(cri.name))
