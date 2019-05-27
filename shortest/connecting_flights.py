@@ -1,5 +1,6 @@
 from . import Database
-import time
+# import time
+
 
 class ConnectingFlights:
     """Class to calculate ConnectingFlights"""
@@ -13,7 +14,7 @@ class ConnectingFlights:
         """Add one flight to database. Accept multiple weights as kwrags"""
         print(kwargs)
         self.db.add_flight(orig, dest, **kwargs)
-        self.calc_all() # calculate shortest path
+        self.calc_all()  # calculate shortest path
 
     def add_many_flights(self, arr):
         """Accept list of list, format: [orig, dest, **weight]"""
@@ -40,10 +41,10 @@ class ConnectingFlights:
     def floyd_warshal(self, criterion):
         """Generate shortest path data in db using floyd warshal algorithm"""
 
-        all_airports = self.db.all_airports_list()
+        all_airports = self.db.all_airports
 
         # init adjacency list
-        self.make_adj(all_airports, criterion)
+        self.make_adj(criterion)
 
         for thru in all_airports:   # thru = intermediate vertex to consider
             for orig in all_airports:
@@ -60,7 +61,7 @@ class ConnectingFlights:
 
                     if orig_to_thru is None or thru_to_dest is None:
                         # do nothing when not accessable thrugh intermediate
-                        continue 
+                        continue
 
                     # calculate new weight when going through intermediate "thru" vertex
                     new_weight = float(orig_to_thru["weight"]) + float(thru_to_dest["weight"])
@@ -86,7 +87,7 @@ class ConnectingFlights:
         """Print shortest path for each origin and destination pair"""
 
         # get string list of all airports
-        all_airports = self.db.all_airports_list()
+        all_airports = self.db.all_airports
 
         for orig in all_airports:
             for dest in all_airports:
@@ -148,12 +149,11 @@ class ConnectingFlights:
         elif criterion == Database.Criterion.distance:
             return "{} miles".format(target)
 
-    def make_adj(self, all_airports, criterion):
+    def make_adj(self, criterion):
         """Initialize adj with flights"""
 
         weight_name = criterion.name
-        all_flights = self.db.all_flights()
-        for flight in all_flights:
+        for flight in self.db.all_flights:
             orig = flight["orig"]
             dest = flight["dest"]
             try:

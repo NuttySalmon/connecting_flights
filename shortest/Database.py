@@ -56,12 +56,8 @@ class Database():
         """Get all flights connected to give origin airport id"""
         return self._flights.find({"orig": orig})
 
+    @property
     def all_airports(self):
-        """Returns all airports"""
-
-        return self._airports.find({})
-
-    def all_airports_list(self):
         """Returns all airports as list of strings"""
 
         group = self._airports.aggregate([
@@ -124,6 +120,7 @@ class Database():
 
         self._adj.drop()
 
+    @property
     def all_flights(self):
         """Return all flights"""
 
