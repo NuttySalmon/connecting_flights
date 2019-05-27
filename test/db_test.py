@@ -15,7 +15,7 @@ def test_add_airport():
     id = "test"
     db.add_airport(id)
 
-    result = db.airports.find_one({"id": id})
+    result = db._airports.find_one({"id": id})
     assert result["id"] == id
 
 
@@ -26,7 +26,7 @@ def test_add_duplicate_airport():
     db.add_airport(id)
     db.add_airport(id)
 
-    result = db.airports.count_documents({"id": id})
+    result = db._airports.count_documents({"id": id})
     assert result == 1
 
 
@@ -41,7 +41,7 @@ def test_add_flight():
     distance = 5000
 
     db.add_flight(orig, dest, airline=airline, no=no, price=price, distance=distance)
-    result = db.flights.count_documents(
+    result = db._flights.count_documents(
         {"orig": orig,
          "dest": dest,
          "no": no,
@@ -61,7 +61,7 @@ def test_auto_add_airport():
     distance = 5000
 
     db.add_flight(orig, dest, airline=airline, no=no, price=price, distance=distance)
-    result1 = db.airports.count_documents({"id": orig})
-    result2 = db.airports.count_documents({"id": dest})
+    result1 = db._airports.count_documents({"id": orig})
+    result2 = db._airports.count_documents({"id": dest})
 
     assert result1 == 1 and result2 == 1

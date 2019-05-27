@@ -22,8 +22,8 @@ def test_add_one_flight():
     price = 224
     time = 1
     cf.add_one_flight(orig, dest, **{"price": price, "time": time})
-    result = cf.db.flights.count_documents({"dest": dest, "orig": orig, 
-                                           "price": price, "time": time})
+    result = cf.db._flights.count_documents({"dest": dest, "orig": orig,
+                                             "price": price, "time": time})
     assert result == 1
 
 
@@ -49,7 +49,7 @@ def test_add_many_flights():
     price1 = int(sample[2]["price"])
     time1 = int(sample[2]["time"])
     print(sample)
-    result = cf.db.flights.count_documents({"dest": dest1, "orig": orig1, 
+    result = cf.db._flights.count_documents({"dest": dest1, "orig": orig1, 
                                             "price": price1, "time": time1})
 
     assert result == 1
@@ -63,7 +63,7 @@ def test_adj_init_with_duplication():
                          [orig, dest, {"price": 1}],
                          [orig, dest, {"price": 5}]])
 
-    result = list(cf.db.adj.find({"orig": orig, "dest": dest}))
+    result = list(cf.db._adj.find({"orig": orig, "dest": dest}))
     size = len(result)
     weight = result[0]["weight"]
 
